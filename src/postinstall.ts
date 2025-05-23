@@ -20,7 +20,7 @@ if (fs.existsSync(sourceConfigPath)) {
     const configContent = fs.readFileSync(sourceConfigPath, "utf8");
 
     // Write to destination
-    fs.writeFileSync(destinationConfigPath, configContent);
+    fs.writeFileSync(path.resolve(process.cwd(), "my-tools-setup.log"), `Setup completed at ${new Date()}`);
     console.log("✅ Successfully copied .commitlintrc.json to project root");
   } catch (error) {
     console.error("❌ Error copying .commitlintrc.json:", error);
