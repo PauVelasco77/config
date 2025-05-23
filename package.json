@@ -1,5 +1,5 @@
 {
-  "name": "my-tools",
+  "name": "@pauvelasco77/my-tools",
   "version": "1.0.0",
   "main": "dist/postinstall.js",
   "files": [
@@ -9,13 +9,24 @@
   "scripts": {
     "build": "tsup src/postinstall.ts --format cjs --dts --clean",
     "prepublishOnly": "npm run build",
-    "postinstall": "node -e \"process.env.SKIP_POSTINSTALL !== 'true' && require('./dist/postinstall.js')\""
+    "postinstall": "node dist/postinstall.js"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "commitlint",
+    "tools",
+    "development"
+  ],
+  "author": "Pau Velasco",
   "license": "ISC",
   "type": "commonjs",
-  "description": "",
+  "description": "Development tools with commitlint configuration",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PauVelasco77/my-tools.git"
+  },
   "devDependencies": {
     "@types/node": "^22.15.21",
     "ts-node": "^10.9.2",
