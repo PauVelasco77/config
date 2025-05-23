@@ -1,26 +1,42 @@
-import fs from "fs";
-import path from "path";
-import {fileURLToPath} from "url";
+import * as fs from "fs";
+import * as path from "path";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+// Make the message more visible by adding multiple lines
+console.log("\n======================================");
+console.log("🚀 Running my-tools postinstall");
+console.log("======================================\n");
 
-// Paths
-const packageRoot = path.resolve(__dirname, "..");
-const projectRoot = process.cwd();
-const fileName = ".commitlintrc.json";
+// Get the path to the .commitlintrc.json file in this package
+const sourceConfigPath = path.resolve(__dirname, "../.commitlintrc.json");
 
-const sourcePath = path.join(packageRoot, fileName);
-const targetPath = path.join(projectRoot, fileName);
+// Get the destination path - the root of the project where this package is installed
+// When the package is installed as a dependency, process.cwd() should be the project root
+const destinationConfigPath = path.resolve(process.cwd(), ".commitlintrc.json");
 
-// Copy if not already there
-try {
-  if (!fs.existsSync(targetPath)) {
-    fs.copyFileSync(sourcePath, targetPath);
-    console.log(`✅ Copied ${fileName} to your project root.`);
-  } else {
-    console.log(`⚠️  ${fileName} already exists. Skipping copy.`);
+// Check if the source file exists
+if (fs.existsSync(sourceConfigPath)) {
+  try {
+    // Read the source file
+    const configContent = fs.readFileSync(sourceConfigPath, "utf8");
+
+    // Write to destination
+    fs.writeFileSync(destinationConfigPath, configContent);
+    console.log("✅ Successfully copied .commitlintrc.json to project root");
+  } catch (error) {
+    console.error("❌ Error copying .commitlintrc.json:", error);
   }
-} catch (err) {
-  console.error(`❌ Failed to copy ${fileName}:`, err);
+} else {
+  console.error("❌ Source .commitlintrc.json not found at:", sourceConfigPath);
+
+  // Fallback - try to find the file in the package itself
+  const alternateSourcePath = path.resolve(__dirname, "../.commitlintrc.json");
+  if (fs.existsSync(alternateSourcePath)) {
+    try {
+      const configContent = fs.readFileSync(alternateSourcePath, "utf8");
+      fs.writeFileSync(destinationConfigPath, configContent);
+      console.log("✅ Successfully copied .commitlintrc.json to project root (from alternate path)");
+    } catch (error) {
+      console.error("❌ Error copying from alternate path:", error);
+    }
+  }
 }

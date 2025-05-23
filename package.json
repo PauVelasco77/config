@@ -1,15 +1,15 @@
 {
   "name": "my-tools",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/postinstall.js",
   "files": [
     "dist",
     ".commitlintrc.json"
   ],
   "scripts": {
-    "build": "tsup src/postinstall.ts --format esm --dts --minify --clean",
-    "postinstall": "node dist/postinstall.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsup src/postinstall.ts --format cjs --dts --clean",
+    "prepublishOnly": "npm run build",
+    "postinstall": "node -e \"process.env.SKIP_POSTINSTALL !== 'true' && require('./dist/postinstall.js')\""
   },
   "keywords": [],
   "author": "",
@@ -21,5 +21,8 @@
     "ts-node": "^10.9.2",
     "tsup": "^8.5.0",
     "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@commitlint/config-conventional": "^18.0.0"
   }
 }
