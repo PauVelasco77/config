@@ -1,0 +1,25 @@
+{
+  "name": "my-tools",
+  "version": "1.0.0",
+  "main": "index.js",
+  "files": [
+    "dist",
+    ".commitlintrc.json"
+  ],
+  "scripts": {
+    "build": "tsup src/postinstall.ts --format esm --dts --minify --clean",
+    "postinstall": "node dist/postinstall.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "description": "",
+  "devDependencies": {
+    "@types/node": "^22.15.21",
+    "ts-node": "^10.9.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
+  }
+}
